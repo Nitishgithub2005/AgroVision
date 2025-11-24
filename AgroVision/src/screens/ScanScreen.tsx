@@ -1,4 +1,4 @@
-// // src/screens/ScanScreen.tsx
+// //src/screens/ScanScreen.tsx
 // import React, { useState } from "react";
 // import {
 //   View,
