@@ -1,0 +1,311 @@
+diff --git a/node_modules/react-native-voice/android/build.gradle b/node_modules/react-native-voice/android/build.gradle
+index c0484f8..301f7ff 100644
+--- a/node_modules/react-native-voice/android/build.gradle
++++ b/node_modules/react-native-voice/android/build.gradle
+@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
+ 
+ repositories {
+     mavenLocal()
+-    jcenter()
++    google()
++    mavenCentral()
+     maven {
+         // For developing the library outside the context of the example app, expect `react-native`
+         // to be installed at `./node_modules`.
+@@ -14,17 +15,17 @@ repositories {
+     }
+ }
+ 
+-def DEFAULT_COMPILE_SDK_VERSION = 23
+-def DEFAULT_BUILD_TOOLS_VERSION = "23.0.2"
+-def DEFAULT_TARGET_SDK_VERSION = 23
+-def DEFAULT_SUPPORT_LIB_VERSION = "23.1.1"
++def DEFAULT_COMPILE_SDK_VERSION = 34
++def DEFAULT_BUILD_TOOLS_VERSION = "34.0.0"
++def DEFAULT_TARGET_SDK_VERSION = 34
++def DEFAULT_SUPPORT_LIB_VERSION = "28.0.0"
+ 
+ android {
+     compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
+     buildToolsVersion rootProject.hasProperty('buildToolsVersion') ? rootProject.buildToolsVersion : DEFAULT_BUILD_TOOLS_VERSION
+ 
+     defaultConfig {
+-        minSdkVersion 15
++        minSdkVersion 21
+         targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
+         versionCode 1
+         versionName "1.0"
+@@ -35,14 +36,20 @@ android {
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
+     }
++    
++    compileOptions {
++        sourceCompatibility JavaVersion.VERSION_1_8
++        targetCompatibility JavaVersion.VERSION_1_8
++    }
+ }
+ 
+ buildscript {
+     repositories {
+-        jcenter()
++        google()
++        mavenCentral()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:1.5.0'
++        classpath 'com.android.tools.build:gradle:7.4.2'
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
+@@ -51,15 +58,16 @@ buildscript {
+ 
+ allprojects {
+     repositories {
+-        jcenter()
++        google()
++        mavenCentral()
+     }
+ }
+ 
+ def supportVersion = rootProject.hasProperty('supportLibVersion') ? rootProject.supportLibVersion : DEFAULT_SUPPORT_LIB_VERSION
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
+-    testCompile 'junit:junit:4.12'
+-    compile 'com.android.support:appcompat-v7:${supportVersion}'
+-    compile 'com.facebook.react:react-native:+'
++    implementation fileTree(dir: 'libs', include: ['*.jar'])
++    testImplementation 'junit:junit:4.12'
++    implementation 'androidx.appcompat:appcompat:1.6.1'
++    implementation 'com.facebook.react:react-native:+'
+ }
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/generated/source/buildConfig/debug/com/wenkesj/voice/BuildConfig.java b/node_modules/react-native-voice/android/build/generated/source/buildConfig/debug/com/wenkesj/voice/BuildConfig.java
+new file mode 100644
+index 0000000..990e562
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/generated/source/buildConfig/debug/com/wenkesj/voice/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.wenkesj.voice;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.wenkesj.voice";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..39b583a
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    package="com.wenkesj.voice" >
++
++    <uses-sdk
++        android:minSdkVersion="21"
++        tools:overrideLibrary="com.facebook.react" />
++
++    <uses-permission android:name="android.permission.RECORD_AUDIO" />
++    <uses-permission android:name="android.permission.INTERNET" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..635eb61
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.wenkesj.voice",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/react-native-voice/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/react-native-voice/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/react-native-voice/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-voice/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..9bf9a98
+Binary files /dev/null and b/node_modules/react-native-voice/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/react-native-voice/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/react-native-voice/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..1d1e72c
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Sat Nov 22 08:58:18 IST 2025
+diff --git a/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..50a700d
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/react-native-voice/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/react-native-voice/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/react-native-voice/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..9b85103
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,19 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    xmlns:tools="http://schemas.android.com/tools"
++4    package="com.wenkesj.voice" >
++5
++6    <uses-sdk
++6-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:5-60
++7        android:minSdkVersion="21"
++8        tools:overrideLibrary="com.facebook.react" />
++8-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:15-57
++9
++10    <uses-permission android:name="android.permission.RECORD_AUDIO" />
++10-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:6:5-71
++10-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:6:22-68
++11    <uses-permission android:name="android.permission.INTERNET" />
++11-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:7:5-67
++11-->/Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:7:22-64
++12
++13</manifest>
+diff --git a/node_modules/react-native-voice/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/react-native-voice/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..39b583a
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    package="com.wenkesj.voice" >
++
++    <uses-sdk
++        android:minSdkVersion="21"
++        tools:overrideLibrary="com.facebook.react" />
++
++    <uses-permission android:name="android.permission.RECORD_AUDIO" />
++    <uses-permission android:name="android.permission.INTERNET" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/react-native-voice/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/react-native-voice/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/react-native-voice/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/react-native-voice/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..739957e
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1 @@
++com.wenkesj.voice
+diff --git a/node_modules/react-native-voice/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-voice/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..8475464
+--- /dev/null
++++ b/node_modules/react-native-voice/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,29 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:1:1-8:12
++INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:1:1-8:12
++	package
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:2:5-32
++		INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml
++	xmlns:tools
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:3:5-51
++	xmlns:android
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:1:11-69
++uses-sdk
++ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:5-60
++INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:5-60
++INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:5-60
++	tools:overrideLibrary
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:5:15-57
++	android:targetSdkVersion
++		INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml
++uses-permission#android.permission.RECORD_AUDIO
++ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:6:5-71
++	android:name
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:6:22-68
++uses-permission#android.permission.INTERNET
++ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:7:5-67
++	android:name
++		ADDED from /Users/nitishrmaladakar/Desktop/PLant App/AgroVision/node_modules/react-native-voice/android/src/main/AndroidManifest.xml:7:22-64
+diff --git a/node_modules/react-native-voice/android/src/main/java/com/wenkesj/voice/VoiceModule.java b/node_modules/react-native-voice/android/src/main/java/com/wenkesj/voice/VoiceModule.java
+index 40b8927..d2d701d 100644
+--- a/node_modules/react-native-voice/android/src/main/java/com/wenkesj/voice/VoiceModule.java
++++ b/node_modules/react-native-voice/android/src/main/java/com/wenkesj/voice/VoiceModule.java
+@@ -11,7 +11,7 @@ import android.speech.RecognitionListener;
+ import android.speech.RecognitionService;
+ import android.speech.RecognizerIntent;
+ import android.speech.SpeechRecognizer;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ 
+ import com.facebook.react.bridge.Arguments;

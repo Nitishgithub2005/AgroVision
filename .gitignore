@@ -1,0 +1,91 @@
+# -----------------------------------
+# General / OS Files
+# -----------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.log
+.metro-health-check* # RN temp
+
+# -----------------------------------
+# Backend (FastAPI / Python)
+# -----------------------------------
+venv/
+env/
+.venv/
+.env/
+*venv*/
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+.eggs/
+build/
+develop-eggs/
+dist/
+wheels/
+*.egg-info/
+*.whl
+# Secrets
+.env
+.env.*.local
+.secret
+secrets.json
+*.db
+*.sqlite
+*.sqlite3
+
+# -----------------------------------
+# Frontend (React Native / Node)
+# -----------------------------------
+# Node Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log*
+
+# React Native / iOS / Android Builds
+build/
+DerivedData
+*.ipa
+*.jsbundle
+**/Pods/
+/vendor/bundle/
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+.cxx/
+*.keystore
+!debug.keystore
+.kotlin/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+*.hmap
+*.xcuserstate
+**/.xcode.env.local
+.gradle
+local.properties
+*.iml
+*.hprof
+
+# Testing
+/coverage
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
