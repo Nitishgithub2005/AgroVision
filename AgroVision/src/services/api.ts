@@ -8,7 +8,7 @@ import { Platform } from "react-native";
 //   (run: `ipconfig getifaddr en0` on macOS to get it).
 //
 export const API_BASE_URL =
-  Platform.OS === "android" ? "http://10.0.2.2:3030" : "http://localhost:3030";
+  Platform.OS === "android" ? "http://localhost:3030" : "http://localhost:3030";
 // If using a real phone, change the above to: "http://<YOUR_MAC_IP>:3030"
 
 export async function uploadImage(fileUri: string) {

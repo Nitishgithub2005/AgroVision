@@ -27,7 +27,7 @@
 // };
 
 // // --- CONFIG (FRONTEND-ONLY, DANGEROUS IN PRODUCTION) ---
-// const GEMINI_API_KEY = "AIzaSyBavXzVwWBlS7C-fsqWLad4o685IcA3AuU"; // <<-- PUT DEV KEY HERE ONLY
+// const GEMINI_API_KEY = ""; // <<-- PUT DEV KEY HERE ONLY
 // const GEMINI_MODEL = "gemini-2.0-flash";
 // const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
@@ -235,8 +235,8 @@
 
 //   // Updated backend URL for new FastAPI backend
 //   const BASE_URL = Platform.OS === "android" 
-//     ? "http://192.168.1.5:3030" 
-//     : "http://192.168.1.5:3030";
+//     ? "http://local:3030" 
+//     : "http://local:3030";
   
 //   const PREDICT_URL = `${BASE_URL}/predict`;
 
@@ -555,7 +555,7 @@ type PredictionResponse = {
 };
 
 // --- CONFIG - Get free API key from: https://console.groq.com ---
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = "";
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 
 // --- Languages ---
@@ -751,8 +751,8 @@ export default function ScanScreen() {
 
   // Updated backend URL for new FastAPI backend
   const BASE_URL = Platform.OS === "android" 
-    ? "http://192.168.1.5:3030" 
-    : "http://192.168.1.5:3030";
+    ? "http://localhost:3030" 
+    : "http://localhost:3030";
   
   const PREDICT_URL = `${BASE_URL}/predict`;
 

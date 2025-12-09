@@ -31,7 +31,7 @@ const LANGUAGES: Record<LanguageCode, Language> = {
 };
 
 // Get free Groq API key from: https://console.groq.com
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = "";
 
 export default function ChatScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>("en");

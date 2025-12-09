@@ -65,7 +65,7 @@ async def model_info():
             "model_type": "CNN",
             "input_shape": [128, 128, 3],
             "input_range": "0-255 (NOT normalized)",
-            "total_classes": 38,
+            "total_classes": 21,
             "framework": "TensorFlow/Keras"
         }
     except Exception as e:

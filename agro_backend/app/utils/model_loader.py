@@ -41,7 +41,7 @@ def create_model_architecture():
     model.add(Flatten())
     model.add(Dense(units=1500, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(units=38, activation='softmax'))
+    model.add(Dense(units=21, activation='softmax'))
     
     return model
 
@@ -52,7 +52,7 @@ def get_model():
     global _model
     
     if _model is None:
-        model_path = Path("models/trained_model.h5")
+        model_path = Path("models/with_21.keras")
         
         if not model_path.exists():
             raise FileNotFoundError(
@@ -100,13 +100,6 @@ def get_class_names():
         else:
             # Exact class names from your reference code
             _class_names = [
-                'Apple___Apple_scab',
-                'Apple___Black_rot',
-                'Apple___Cedar_apple_rust',
-                'Apple___healthy',
-                'Blueberry___healthy',
-                'Cherry_(including_sour)___Powdery_mildew',
-                'Cherry_(including_sour)___healthy',
                 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
                 'Corn_(maize)___Common_rust_',
                 'Corn_(maize)___Northern_Leaf_Blight',
@@ -115,19 +108,9 @@ def get_class_names():
                 'Grape___Esca_(Black_Measles)',
                 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
                 'Grape___healthy',
-                'Orange___Haunglongbing_(Citrus_greening)',
-                'Peach___Bacterial_spot',
-                'Peach___healthy',
-                'Pepper,_bell___Bacterial_spot',
-                'Pepper,_bell___healthy',
                 'Potato___Early_blight',
                 'Potato___Late_blight',
                 'Potato___healthy',
-                'Raspberry___healthy',
-                'Soybean___healthy',
-                'Squash___Powdery_mildew',
-                'Strawberry___Leaf_scorch',
-                'Strawberry___healthy',
                 'Tomato___Bacterial_spot',
                 'Tomato___Early_blight',
                 'Tomato___Late_blight',

@@ -28,7 +28,7 @@ const IRRIGATION_OPTIONS: IrrigationType[] = ["Drip", "Sprinkler", "Flood", "Rai
 
 
 // Replace with your Groq API key
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = "";
 
 export default function YieldEstimatorScreen() {
   const [cropType, setCropType] = useState<CropType>("Rice");

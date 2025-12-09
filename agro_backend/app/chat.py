@@ -6,7 +6,7 @@ import requests
 
 router = APIRouter()
 
-GEMINI_KEY = "AIzaSyAV90d8mAekdPUmdVw_v__XoEWwk5Jw2LA"
+GEMINI_KEY = "API_key"
 GEMINI_MODEL = "gemini-2.0-flash"
 # [Unverified] Endpoint pattern - adjust if Google changes API.
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}"
