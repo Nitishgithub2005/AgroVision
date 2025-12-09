@@ -1,50 +1,120 @@
-# app/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import uvicorn
-import os
+from app.predict import predict_disease
+from app.utils.model_loader import get_model, get_class_names
+import logging
 
-from app.predict import router as predict_router
-from app.chat import router as chat_router
-from app.utils.model_loader import load_model
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-APP_NAME = "agro_backend"
+# Initialize FastAPI app
+app = FastAPI(
+    title="Plant Disease Classification API",
+    description="API for predicting plant diseases using CNN model",
+    version="1.0.0"
+)
 
-def create_app() -> FastAPI:
-    app = FastAPI(title=APP_NAME)
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Update this with specific origins in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    # Allow all CORS for development (tighten for production)
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# Load model on startup
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Loading model...")
+    try:
+        get_model()
+        logger.info("Model loaded successfully!")
+    except Exception as e:
+        logger.error(f"Failed to load model: {str(e)}")
+        raise
 
-    # Mount routers
-    app.include_router(predict_router, prefix="/api/v1")
-    app.include_router(chat_router, prefix="/api/v1")
+@app.get("/")
+async def root():
+    """Root endpoint"""
+    return {
+        "message": "Plant Disease Classification API",
+        "status": "active",
+        "endpoints": {
+            "predict": "/predict",
+            "model_info": "/model-info",
+            "classes": "/classes",
+            "health": "/health"
+        }
+    }
 
-    @app.get("/health")
-    async def health():
-        return {"status": "ok", "app": APP_NAME}
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy"}
 
-    # Preload model at startup to avoid first-request delay
-    @app.on_event("startup")
-    async def startup_event():
-        # Attempt to load model once (model_loader handles idempotence)
-        try:
-            load_model()
-            print("Model loaded successfully on startup.")
-        except Exception as e:
-            # Print error but don't crash the server here; keeps dev loop flexible
-            print("Warning: model failed to load on startup:", e)
+@app.get("/model-info")
+async def model_info():
+    """Get model information"""
+    try:
+        model = get_model()
+        return {
+            "model_type": "CNN",
+            "input_shape": [128, 128, 3],
+            "input_range": "0-255 (NOT normalized)",
+            "total_classes": 38,
+            "framework": "TensorFlow/Keras"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting model info: {str(e)}")
 
-    return app
+@app.get("/classes")
+async def get_classes():
+    """Get all available plant disease classes"""
+    try:
+        class_names = get_class_names()
+        return {
+            "total_classes": len(class_names),
+            "classes": class_names
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting classes: {str(e)}")
 
-app = create_app()
+@app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+    """
+    Predict plant disease from uploaded image
+    
+    Parameters:
+    - file: Image file (JPEG, PNG)
+    
+    Returns:
+    - predicted_class: Name of the predicted disease
+    - confidence: Confidence score
+    - top_3_predictions: Top 3 predictions with confidence scores
+    """
+    # Validate file type
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(
+            status_code=400, 
+            detail="File must be an image (JPEG, PNG, etc.)"
+        )
+    
+    try:
+        # Read image file
+        image_bytes = await file.read()
+        
+        # Get prediction
+        result = predict_disease(image_bytes)
+        
+        return JSONResponse(content=result)
+    
+    except Exception as e:
+        logger.error(f"Prediction error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 3030))
-    uvicorn.run("app.main:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=3030, reload=True)

@@ -1,25 +1,32 @@
 // src/navigation/AppNavigator.tsx
-import React from "react";
+import React, { JSX } from "react";
 import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
-// Screens (we'll create these shortly)
+// Screens
 import HomeScreen from "../screens/HomeScreen";
 import ScanScreen from "../screens/ScanScreen";
 import ChatScreen from "../screens/ChatScreen";
-import HistoryScreen from "../screens/HistoryScreen";
+import YieldEstimatorScreen from "../screens/YieldEstimatorScreen";
 
 export type RootTabParamList = {
-  Home: undefined;
+  HomeTab: undefined;
   Scan: undefined;
   Chat: undefined;
-  History: undefined;
+  Estimate_Yield: undefined;
+};
+
+export type HomeStackParamList = {
+  Home: undefined;
+  YieldEstimator: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 const theme = {
   ...DefaultTheme,
@@ -33,12 +40,26 @@ const theme = {
   },
 };
 
+// Create Home Stack Navigator
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="YieldEstimator" component={YieldEstimatorScreen} />
+    </HomeStack.Navigator>
+  );
+}
+
 export default function AppNavigator(): JSX.Element {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Home"
+          initialRouteName="HomeTab"
           screenOptions={({ route }) => ({
             headerShown: false,
             tabBarActiveTintColor: theme.colors.primary,
@@ -53,14 +74,14 @@ export default function AppNavigator(): JSX.Element {
             tabBarIcon: ({ color, size }) => {
               let iconName = "home";
 
-              if (route.name === "Home") {
+              if (route.name === "HomeTab") {
                 iconName = "home";
               } else if (route.name === "Scan") {
                 iconName = "camera";
               } else if (route.name === "Chat") {
                 iconName = "chat";
-              } else if (route.name === "History") {
-                iconName = "history";
+              } else if (route.name === "Estimate_Yield") {
+                iconName = "calculator";
               }
 
               return (
@@ -73,10 +94,26 @@ export default function AppNavigator(): JSX.Element {
             },
           })}
         >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Home" }} />
-          <Tab.Screen name="Scan" component={ScanScreen} options={{ title: "Scan Plant" }} />
-          <Tab.Screen name="Chat" component={ChatScreen} options={{ title: "Chat" }} />
-          <Tab.Screen name="History" component={HistoryScreen} options={{ title: "History" }} />
+          <Tab.Screen 
+            name="HomeTab" 
+            component={HomeStackNavigator} 
+            options={{ title: "Home" }} 
+          />
+          <Tab.Screen 
+            name="Scan" 
+            component={ScanScreen} 
+            options={{ title: "Scan Plant" }} 
+          />
+          <Tab.Screen 
+            name="Chat" 
+            component={ChatScreen} 
+            options={{ title: "Chat" }} 
+          />
+          <Tab.Screen 
+            name="Estimate_Yield" 
+            component={YieldEstimatorScreen} 
+            options={{ title: "Estimate Yield" }} 
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

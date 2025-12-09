@@ -30,6 +30,9 @@ const LANGUAGES: Record<LanguageCode, Language> = {
   ta: { name: "தமிழ்", greeting: "வணக்கம் விவசாயி நண்பரே! நான் உங்களுக்கு எப்படி உதவ முடியும்?" },
 };
 
+// Get free Groq API key from: https://console.groq.com
+const GROQ_API_KEY = "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";
+
 export default function ChatScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>("en");
   const [showLanguageModal, setShowLanguageModal] = useState(false);
@@ -88,41 +91,78 @@ export default function ChatScreen() {
         ta: "Respond in Tamil (தமிழ்)",
       };
 
+      const systemPrompt = `You are Kisan Mitra, a helpful farming assistant. ${languageInstruction[selectedLanguage]}. Provide agricultural advice, crop information, weather guidance, and farming tips. Keep responses clear and farmer-friendly. ONLY answer questions related to Indian agriculture, farming, crop yields, weather patterns affecting Indian farming, agricultural policies in India, and farming techniques relevant to Indian conditions. If asked about any other topics, politely decline to answer and remind that you're specialized in Indian agriculture only. Remember: Respond ONLY in ${LANGUAGES[selectedLanguage].name} language.`;
+
+      // Groq API call (FREE!)
       const res = await axios.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB7OW58Ah6X1ta42t-_otJMrOgJiy6zv5E",
+        "https://api.groq.com/openai/v1/chat/completions",
         {
-          contents: [
+          messages: [
             {
-              parts: [
-                {
-                  text: `You are Kisan Mitra, a helpful farming assistant. ${languageInstruction[selectedLanguage]}. Provide agricultural advice, crop information, weather guidance, and farming tips. Keep responses clear and farmer-friendly.
-
-The user asked: ${userMsg.content}
-
-Remember: Respond ONLY in ${LANGUAGES[selectedLanguage].name} language.`,
-                },
-              ],
+              role: "system",
+              content: systemPrompt
             },
+            {
+              role: "user",
+              content: userMsg.content
+            }
           ],
+          model: "llama-3.3-70b-versatile", // Fast and free model
+          temperature: 0.7,
+          max_tokens: 1024
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${GROQ_API_KEY}`
+          }
         }
       );
 
       const reply =
-        res.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        res.data?.choices?.[0]?.message?.content ||
         "Sorry, I couldn't understand.";
 
       setMessages((prev) => [...prev, { role: "bot", content: reply }]);
-    } catch (err) {
-      const errorMessages: Record<LanguageCode, string> = {
-        en: "Error: Unable to connect to server.",
-        kn: "ದೋಷ: ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.",
-        hi: "त्रुटि: सर्वर से कनेक्ट नहीं हो पा रहा है।",
-        te: "లోపం: సర్వర్‌కు కనెక్ట్ చేయడం సాధ్యం కాలేదు.",
-        ta: "பிழை: சர்வரை இணைக்க முடியவில்லை.",
-      };
+    } catch (err: any) {
+      console.log("FULL ERROR:", err);
+      console.log("ERROR RESPONSE:", err.response?.data);
+      console.log("ERROR STATUS:", err.response?.status);
+
+      let errorMessage = "";
+      
+      if (err.response?.status === 403) {
+        const errorMessages: Record<LanguageCode, string> = {
+          en: "Error 403: Invalid API key. Please check your Groq API key.",
+          kn: "ದೋಷ 403: ಅಮಾನ್ಯ API ಕೀ. ದಯವಿಟ್ಟು ನಿಮ್ಮ Groq API ಕೀ ಪರಿಶೀಲಿಸಿ.",
+          hi: "त्रुटि 403: अमान्य API कुंजी। कृपया अपनी Groq API कुंजी जांचें।",
+          te: "లోపం 403: చెల్లని API కీ. దయచేసి మీ Groq API కీని తనిఖీ చేయండి.",
+          ta: "பிழை 403: தவறான API விசை. உங்கள் Groq API விசையை சரிபார்க்கவும்.",
+        };
+        errorMessage = errorMessages[selectedLanguage];
+      } else if (err.response?.status === 401) {
+        const errorMessages: Record<LanguageCode, string> = {
+          en: "Error 401: Unauthorized. Please check your API key.",
+          kn: "ದೋಷ 401: ಅನಧಿಕೃತ. ದಯವಿಟ್ಟು ನಿಮ್ಮ API ಕೀ ಪರಿಶೀಲಿಸಿ.",
+          hi: "त्रुटि 401: अनधिकृत। कृपया अपनी API कुंजी जांचें।",
+          te: "లోపం 401: అనధికారం. దయచేసి మీ API కీని తనిఖీ చేయండి.",
+          ta: "பிழை 401: அங்கீகரிக்கப்படவில்லை. உங்கள் API விசையை சரிபார்க்கவும்.",
+        };
+        errorMessage = errorMessages[selectedLanguage];
+      } else {
+        const errorMessages: Record<LanguageCode, string> = {
+          en: "Error: Unable to connect to server.",
+          kn: "ದೋಷ: ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.",
+          hi: "त्रुटि: सर्वर से कनेक्ट नहीं हो पा रहा है।",
+          te: "లోపం: సర్వర్‌కు కనెక్ట్ చేయడం సాధ్యం కాలేదు.",
+          ta: "பிழை: சர்வரை இணைக்க முடியவில்லை.",
+        };
+        errorMessage = errorMessages[selectedLanguage];
+      }
+      
       setMessages((prev) => [
         ...prev,
-        { role: "bot", content: errorMessages[selectedLanguage] },
+        { role: "bot", content: errorMessage },
       ]);
     }
 
