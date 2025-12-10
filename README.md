@@ -200,9 +200,26 @@ npx react-native run-android
 
 ## 🖼️ Project Screenshots
 
-(Insert images manually)  
-<img width="200" height="400" padding="5px" alt="image" src="https://github.com/user-attachments/assets/d478114d-8929-4e7e-bf7b-fc809a719aed" />
-<img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/d478114d-8929-4e7e-bf7b-fc809a719aed" />
+<table>
+  <tr>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/d478114d-8929-4e7e-bf7b-fc809a719aed" /></td>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/a9c9f192-0ed8-4b98-9421-7e371f5d248b" /></td>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/6af3ed7f-e5fc-4e6e-b6ed-2ec7950b2a5a" /></td>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/7c83cfb9-1eef-4d77-8b1a-4624d24083a7" /></td>
+  </tr>
+
+  <tr>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/01ae8492-5edd-413d-92cd-c743881c3923" /></td>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/edc4c78a-415a-49f5-8ae2-f7bd39f56374" /></td>
+    <td><img width="200" height="400" src="https://github.com/user-attachments/assets/86822e66-0877-4cc2-9865-77002246aa62" /></td>
+  </tr>
+</table>
+
+
+
+
+
+
 
 - Home Screen  
 - Plant Scanner  
