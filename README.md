@@ -201,7 +201,7 @@ npx react-native run-android
 ## 🖼️ Project Screenshots
 
 (Insert images manually)  
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/d478114d-8929-4e7e-bf7b-fc809a719aed" />
+<img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/d478114d-8929-4e7e-bf7b-fc809a719aed" />
 
 - Home Screen  
 - Plant Scanner  
