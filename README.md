@@ -83,7 +83,8 @@ Includes:
 
 ## 🧩 System Architecture
 
-[Add architecture diagram here manually]
+<img width="800" height="400" alt="Untitled-2025-12-06-1740" src="https://github.com/user-attachments/assets/1380df65-7967-48df-a28b-1b8dc6620796" />
+
 
 ---
 
